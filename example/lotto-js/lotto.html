@@ -63,4 +63,61 @@
 	</ul>
 	<input type="button" value="SAVE">
 </body>
+<script type="text/javascript">
+	'use strict';
+
+	const $ = (selector) => {
+		return document.querySelector(selector);
+	}
+
+	const $$ = (selector) => {
+		return document.querySelectorAll(selector);
+	}
+
+	const selectedLottoNumbers = {};
+
+	const eventTargetLottoNumbers = $('ul');
+
+	// debugger;
+
+	eventTargetLottoNumbers.addEventListener('click', (evt) => {
+
+		const target = evt.target;
+
+		if(!isLottoNumberNodeName(target)) {
+			return false;
+		}
+
+		const number = target.innerText;
+
+		// 기존에 번호가 존재 한다면 해지하고 삭제
+		if(alreadySelectedNumber(number)) {
+				const li = selectedLottoNumbers[number];
+				li.setAttribute("class", null);
+				delete selectedLottoNumbers[number];
+
+				return;
+		}
+
+		// 로또가 6개 이상 존재 한다면
+		if(Object.keys(selectedLottoNumbers).length >= 6) {
+				return alert('로또 번호는 6개만 선택 가능합니다.');
+		}
+
+		selectedLottoNumbers[number] = target;
+		target.setAttribute('class', 'selected');
+
+	});
+
+
+
+	function alreadySelectedNumber(number) {
+		return !(selectedLottoNumbers[number] === undefined);
+	}
+
+
+	function isLottoNumberNodeName(nodeName) {
+		return nodeName.localName.toUpperCase() === 'LI';
+	}
+</script>
 </html>
